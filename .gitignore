@@ -1,0 +1,24 @@
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+
+# PostgreSQL/local database files
+*.db
+
+# IDE files
+.vscode/
+
+# Runtime issue image uploads
+backend/uploads/issues/
+# Local JavaScript dependencies
+node_modules/
+
+# Repaired/local Python environments
+backend/venv_repaired/
+backend/venv_cleanup_verify/
