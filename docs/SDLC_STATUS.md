@@ -11,8 +11,10 @@ This document distinguishes repository evidence from planned work. A phase is no
 | System Architecture | Completed | `docs/diagrams/SYSTEM_ARCHITECTURE.md` is the completed standalone architecture document. It records the implemented overview, layered architecture, authentication/RBAC, issue, map, image, notification, database, API, security, and runtime architecture, with a Mermaid diagram, data flow, constraints, and current scope. |
 | ER Diagram / Database Design | Completed | `docs/diagrams/ER_DIAGRAM.svg` and `docs/diagrams/ER_DIAGRAM.drawio` are committed. The repository also contains SQLAlchemy models for users, issues, issue updates, images, departments, assignments, and notifications. |
 | Development | Completed | The committed `backend/app/` and `frontend/src/` trees implement authentication, issue reporting, mapping, evidence images, assignment, status/progress, notifications, and role-specific dashboards. The completed runtime verification passed for the implemented application areas. |
-| Testing | Completed | `docs/TESTING.md` records the verified runtime, API, frontend, build, dependency, security, and database checks. It explicitly identifies results that were not recorded as standalone tests. No new test run is claimed for the documentation pass. |
-| CI/CD | CI/CD Validation Verified | `.github/workflows/ci.yml` is committed and GitHub Actions successfully executed it for commit `699c80f`. Both `backend-validation` and `frontend-validation` completed successfully, validating the backend and frontend code/build steps. This does not constitute public or cloud deployment. |
+| Database Migration System | Completed | Alembic `1.16.4` is configured with baseline revision `1b1e22234583`. The existing `smart_civic` database was adopted by stamping that baseline after read-only comparison and backup. FastAPI startup no longer executes `create_all()`; future migration execution is an explicit deployment step. |
+| Migration Workflow Documentation | Completed | `docs/ALEMBIC_WORKFLOW.md` documents explicit targeting, autogeneration review, disposable-database testing, rollback cautions, baseline preservation, CI boundaries, and the approved `issues_reported_by_fkey` warning. |
+| Testing | Completed | `docs/TESTING.md` records the verified runtime, API, frontend, build, dependency, security, and database checks. It explicitly identifies results that were not recorded as standalone tests. No new application test suite run is claimed for the documentation pass. |
+| CI/CD | CI/CD Validation Configured | `.github/workflows/ci.yml` contains backend, Alembic static, and frontend validation. An earlier GitHub Actions run for commit `699c80f` passed the then-existing backend and frontend checks; the newly added Alembic checks have passed locally, while GitHub execution of the current uncommitted workflow remains pending. This does not constitute public or cloud deployment. |
 | Deployment | Not Yet Completed | The repository and verification work target local PostgreSQL, local FastAPI, and local Vite execution. No public or cloud deployment was performed or claimed. |
 | Enhancement | Not Yet Completed | AI/computer-vision issue detection, severity estimation, and priority recommendation are documented as future ideas in the existing planning documents. No AI implementation is included in the current feature summary. |
 
@@ -23,6 +25,7 @@ This document distinguishes repository evidence from planned work. A phase is no
 - [Domain Study](./DOMAIN_STUDY.md)
 - [Technology Stack](./TECH_STACK.md)
 - [Testing](./TESTING.md)
+- [Alembic Workflow](./ALEMBIC_WORKFLOW.md)
 - [Validation Summary](./VALIDATION_SUMMARY.md)
 - [System Workflow](./SYSTEM_WORKFLOW.md)
 - [ER Diagram](./diagrams/ER_DIAGRAM.svg)

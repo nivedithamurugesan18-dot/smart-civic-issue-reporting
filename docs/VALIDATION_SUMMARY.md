@@ -60,7 +60,9 @@ New issue, assignment, status, progress, unread count, and mark-as-read behavior
 
 PostgreSQL is the application database. SQLAlchemy models and sessions provide database access for users, issues, issue updates, issue images, departments, assignments, and notifications. The verified cleanup preserved the real Issue 14 and protected users 11, 17, and 18 while removing only the identified temporary audit records.
 
-The database connection and the controlled cleanup verification passed. No schema change was performed during final documentation work.
+The database connection and controlled data verification passed. Alembic `1.16.4` is the explicit schema migration mechanism, with baseline revision `1b1e22234583`. The existing `smart_civic` database was compared read-only, backed up, and stamped at that baseline; the application schema and data remained unchanged except for the intended `alembic_version` marker. FastAPI startup no longer executes `Base.metadata.create_all()` and does not run migrations automatically.
+
+The approved live `issues_reported_by_fkey` remains preserved even though the SQLAlchemy `Issue` model does not declare it. Accordingly, `alembic check` reports the known `remove_fk` discrepancy for that FK only; it must not be applied automatically.
 
 ## 10. Frontend
 

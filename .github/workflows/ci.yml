@@ -35,6 +35,32 @@ jobs:
       - name: Compile backend Python files
         run: python -m compileall -q app
 
+      - name: Validate Alembic package and migration files
+        run: |
+          python -c "import alembic; print(alembic.__version__)"
+          python -m compileall -q alembic
+
+      - name: Discover Alembic baseline without a database
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          from alembic.config import Config
+          from alembic.script import ScriptDirectory
+
+          config = Config("alembic.ini")
+          config.set_main_option("script_location", str(Path("alembic").resolve()))
+          scripts = ScriptDirectory.from_config(config)
+          revision = scripts.get_revision("1b1e22234583")
+
+          assert revision is not None
+          assert revision.revision == "1b1e22234583"
+          assert scripts.get_heads() == ["1b1e22234583"]
+          print("Alembic baseline 1b1e22234583 discovered as the only head")
+          PY
+
       - name: Validate configuration and security imports
         env:
           SECRET_KEY: ci-only-not-a-production-secret

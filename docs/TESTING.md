@@ -54,16 +54,31 @@ No new application test was executed while creating this document. The notes the
 | QUALITY-005 | Build/quality | PostgreSQL connection | Local PostgreSQL and `smart_civic` database available | Connect using the configured environment | The backend can connect to PostgreSQL | PostgreSQL connection passed in the completed verification | Verified | No credentials are recorded in this document |
 | QUALITY-006 | Build/quality | API health endpoint | Backend process running | Request `GET /health` | The endpoint returns a healthy response | The health endpoint was verified in the completed backend verification; it was not re-run during this documentation task | Verified | The route is defined in `backend/app/main.py` |
 
+## Database migration and startup ownership validation
+
+The following database-management results are part of the completed verification evidence:
+
+- The Alembic baseline migration was tested against the disposable PostgreSQL database.
+- The existing `smart_civic` database was adopted at revision `1b1e22234583` after read-only schema comparison and a PostgreSQL backup.
+- The only intended adoption change was the `alembic_version` marker.
+- `Base.metadata.create_all()` was removed from normal FastAPI startup.
+- FastAPI started successfully against the existing schema without automatic schema creation.
+- `/docs` returned HTTP 200.
+- The verified row counts remained `users=13`, `issues=13`, `issue_updates=4`, `issue_images=0`, `departments=0`, `assignments=0`, and `notifications=1`.
+- Issue 14 and protected users 11, 17, and 18 plus Notification 1 remained present.
+- `alembic current` and `alembic heads` reported `1b1e22234583 (head)`.
+- `alembic check` reported only the expected `remove_fk` discrepancy for `issues_reported_by_fkey`; that approved model/database policy remains documented for separate review.
+
 ## CI validation workflow
 
 The repository includes `.github/workflows/ci.yml`, a free GitHub Actions workflow triggered by pushes to `main` and pull requests targeting `main`.
 
-The workflow executed successfully for commit `699c80f`. Both validation jobs completed successfully:
+An earlier workflow run for commit `699c80f` completed successfully for the then-existing backend and frontend checks. The current workflow additionally validates Alembic imports, migration-file compilation, and baseline revision discovery without connecting to PostgreSQL. Those newly added checks passed locally; current GitHub Actions execution remains pending.
 
-- **Backend validation:** installs `backend/requirements.txt`, compiles the `backend/app/` Python files, and imports the configuration and security modules using a CI-only dummy `SECRET_KEY`. It does not require a live PostgreSQL database and does not contain real credentials.
+- **Backend validation:** installs `backend/requirements.txt`, compiles the `backend/app/` and `backend/alembic/` Python files, imports Alembic, discovers baseline revision `1b1e22234583`, and imports configuration/security modules using a CI-only dummy `SECRET_KEY`. It does not require a live PostgreSQL database and does not contain real credentials.
 - **Frontend validation:** runs `npm ci` from the tracked `frontend/package-lock.json`, then runs `npm run lint` and `npm run build`.
 
-This successful run is CI validation evidence for the configured backend and frontend checks. It is not public deployment evidence, does not verify a live PostgreSQL integration test in GitHub Actions, and does not claim a production or cloud deployment.
+This is CI validation evidence for the configured checks, with current GitHub execution of the new Alembic steps still pending. It is not public deployment evidence, does not verify a live PostgreSQL integration test in GitHub Actions, and does not claim a production or cloud deployment.
 
 ## Verification boundary
 

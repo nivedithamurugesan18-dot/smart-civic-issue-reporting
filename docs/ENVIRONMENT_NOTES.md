@@ -6,10 +6,12 @@ This document separates application requirements from limitations specific to th
 
 - A running PostgreSQL instance with the `smart_civic` database.
 - A backend `DATABASE_URL` that points to the local PostgreSQL instance.
+- An explicit `ALEMBIC_DATABASE_URL` supplied separately whenever an Alembic command is run; do not rely on `DATABASE_URL` implicitly for migrations.
 - A non-placeholder `SECRET_KEY` supplied through the backend environment.
 - Python dependencies from `backend/requirements.txt`.
 - Node.js and npm dependencies from `frontend/package.json` and `frontend/package-lock.json`.
 - A backend process running at the URL configured by the frontend API client, currently `http://127.0.0.1:8000`.
+- FastAPI startup does not run migrations or create database tables; use the explicit process in [Alembic Workflow](./ALEMBIC_WORKFLOW.md) for schema changes.
 - Network access to OpenStreetMap tile URLs when map tiles are displayed.
 
 ## Local machine limitations

@@ -77,6 +77,12 @@ CREATE DATABASE smart_civic;
 
 Use a local PostgreSQL role with permission to connect to this database. Do not place real credentials in source control.
 
+## Database migrations (Alembic)
+
+Alembic is the explicit schema migration mechanism for this project. The current baseline revision is `1b1e22234583` (`Initial schema baseline`). FastAPI startup does not run migrations and does not execute SQLAlchemy `create_all()`; schema changes require explicit Alembic commands against an intentionally selected database.
+
+See [Alembic workflow](docs/ALEMBIC_WORKFLOW.md) for the safe command reference, disposable-database testing process, baseline-preservation policy, and the known `issues_reported_by_fkey` autogenerate warning.
+
 ## Backend setup
 
 From the repository root:
@@ -172,6 +178,7 @@ smart-civic-issue-reporting/
 │   │   ├── ER_DIAGRAM.drawio
 │   │   ├── ER_DIAGRAM.svg
 │   │   └── SYSTEM_ARCHITECTURE.md
+│   ├── ALEMBIC_WORKFLOW.md
 │   ├── DEMO_CHECKLIST.md
 │   ├── DOMAIN_STUDY.md
 │   ├── ENVIRONMENT_NOTES.md
@@ -199,6 +206,7 @@ The project is verified for local execution. No public cloud deployment or CI/CD
 
 See the final documentation set:
 
+- [Alembic workflow](docs/ALEMBIC_WORKFLOW.md)
 - [Testing](docs/TESTING.md)
 - [Validation summary](docs/VALIDATION_SUMMARY.md)
 - [System workflow](docs/SYSTEM_WORKFLOW.md)

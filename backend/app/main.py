@@ -4,8 +4,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.database import Base, engine
-
 # ============================================================
 # IMPORT ALL MODELS
 # ============================================================
@@ -32,10 +30,10 @@ from app.routes.issue_image import router as issue_image_router
 from app.routes.notification import router as notification_router
 
 # ============================================================
-# CREATE DATABASE TABLES
+# DATABASE SCHEMA OWNERSHIP
 # ============================================================
-
-Base.metadata.create_all(bind=engine)
+# Schema creation and changes are managed explicitly through Alembic.
+# Application startup must not create or alter database tables.
 
 # ============================================================
 # FASTAPI APPLICATION
