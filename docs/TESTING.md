@@ -58,13 +58,13 @@ No new application test was executed while creating this document. The notes the
 
 The repository includes `.github/workflows/ci.yml`, a free GitHub Actions workflow triggered by pushes to `main` and pull requests targeting `main`.
 
-The workflow runs two independent validation jobs:
+The workflow executed successfully for commit `699c80f`. Both validation jobs completed successfully:
 
 - **Backend validation:** installs `backend/requirements.txt`, compiles the `backend/app/` Python files, and imports the configuration and security modules using a CI-only dummy `SECRET_KEY`. It does not require a live PostgreSQL database and does not contain real credentials.
 - **Frontend validation:** runs `npm ci` from the tracked `frontend/package-lock.json`, then runs `npm run lint` and `npm run build`.
 
-The workflow validates code and build steps; it is not a public cloud deployment. CI execution evidence should be marked as verified only after GitHub Actions actually completes successfully for the repository.
+This successful run is CI validation evidence for the configured backend and frontend checks. It is not public deployment evidence, does not verify a live PostgreSQL integration test in GitHub Actions, and does not claim a production or cloud deployment.
 
 ## Verification boundary
 
-The table documents the completed implementation and runtime verification supplied for this final submission phase. It does not claim a public deployment, successful CI/CD execution, fresh automated test-suite run, or a new browser session during documentation creation.
+The table documents the completed implementation, runtime verification, and the successful CI validation run supplied for this final submission phase. It does not claim a public deployment, a live PostgreSQL integration test in GitHub Actions, a fresh automated test-suite run, or a new browser session during documentation creation.
