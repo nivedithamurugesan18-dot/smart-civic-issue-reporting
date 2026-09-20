@@ -6,7 +6,7 @@ This document distinguishes repository evidence from planned work. A phase is no
 |---|---|---|
 | Problem Statement | Completed | `Problem_Statement.md` defines the project title, domain, users, problem, proposed solution, roles, entities, success criteria, and scope boundaries. |
 | Domain Study | Completed | `docs/DOMAIN_STUDY.md` documents the civic-technology context, target users, current problem, proposed domain workflow, data, limitations, and future opportunities. |
-| Requirements | Partially Completed | Functional expectations are recorded in `Problem_Statement.md`, including success criteria and role permissions. There is no separate formal SRS or requirements-traceability matrix in the repository. |
+| Requirements | Completed | `docs/REQUIREMENTS_SPECIFICATION.md` provides the formal requirements baseline, including functional and non-functional requirements, business rules, data/interface/security requirements, and a requirements traceability matrix mapped to implementation evidence and recorded verification IDs. |
 | Tech Stack | Completed | `docs/TECH_STACK.md` records the selected React, FastAPI, PostgreSQL, SQLAlchemy, JWT, Leaflet/OpenStreetMap, Git/GitHub, and future-AI technologies. Some sections retain planning language and are not treated as execution evidence. |
 | System Architecture | Completed | `docs/diagrams/SYSTEM_ARCHITECTURE.md` is the completed standalone architecture document. It records the implemented overview, layered architecture, authentication/RBAC, issue, map, image, notification, database, API, security, and runtime architecture, with a Mermaid diagram, data flow, constraints, and current scope. |
 | ER Diagram / Database Design | Completed | `docs/diagrams/ER_DIAGRAM.svg` and `docs/diagrams/ER_DIAGRAM.drawio` are committed. The repository also contains SQLAlchemy models for users, issues, issue updates, images, departments, assignments, and notifications. |
@@ -19,6 +19,7 @@ This document distinguishes repository evidence from planned work. A phase is no
 ## Current documentation evidence set
 
 - [Problem Statement](../Problem_Statement.md)
+- [Requirements Specification](./REQUIREMENTS_SPECIFICATION.md)
 - [Domain Study](./DOMAIN_STUDY.md)
 - [Technology Stack](./TECH_STACK.md)
 - [Testing](./TESTING.md)
@@ -29,7 +30,5 @@ This document distinguishes repository evidence from planned work. A phase is no
 
 ## Missing or incomplete college evidence
 
-1. A separate requirements specification and traceability matrix are not present.
-2. GitHub Actions CI execution was successfully verified for commit `699c80f`; both validation jobs completed successfully.
-3. No deployment URL or public/cloud deployment evidence is present.
-4. The AI enhancement remains planned rather than implemented.
+1. No deployment URL or public/cloud deployment evidence is present.
+2. The AI enhancement remains planned rather than implemented.
