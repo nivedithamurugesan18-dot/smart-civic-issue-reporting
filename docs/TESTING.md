@@ -54,6 +54,17 @@ No new application test was executed while creating this document. The notes the
 | QUALITY-005 | Build/quality | PostgreSQL connection | Local PostgreSQL and `smart_civic` database available | Connect using the configured environment | The backend can connect to PostgreSQL | PostgreSQL connection passed in the completed verification | Verified | No credentials are recorded in this document |
 | QUALITY-006 | Build/quality | API health endpoint | Backend process running | Request `GET /health` | The endpoint returns a healthy response | The health endpoint was verified in the completed backend verification; it was not re-run during this documentation task | Verified | The route is defined in `backend/app/main.py` |
 
+## CI validation workflow
+
+The repository includes `.github/workflows/ci.yml`, a free GitHub Actions workflow triggered by pushes to `main` and pull requests targeting `main`.
+
+The workflow runs two independent validation jobs:
+
+- **Backend validation:** installs `backend/requirements.txt`, compiles the `backend/app/` Python files, and imports the configuration and security modules using a CI-only dummy `SECRET_KEY`. It does not require a live PostgreSQL database and does not contain real credentials.
+- **Frontend validation:** runs `npm ci` from the tracked `frontend/package-lock.json`, then runs `npm run lint` and `npm run build`.
+
+The workflow validates code and build steps; it is not a public cloud deployment. CI execution evidence should be marked as verified only after GitHub Actions actually completes successfully for the repository.
+
 ## Verification boundary
 
-The table documents the completed implementation and runtime verification supplied for this final submission phase. It does not claim a public deployment, CI/CD execution, fresh automated test-suite run, or a new browser session during documentation creation.
+The table documents the completed implementation and runtime verification supplied for this final submission phase. It does not claim a public deployment, successful CI/CD execution, fresh automated test-suite run, or a new browser session during documentation creation.
