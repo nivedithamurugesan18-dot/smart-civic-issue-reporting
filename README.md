@@ -1,127 +1,208 @@
-# 🏙️ Smart Public Infrastructure Issue Reporting System
+# Smart Public Infrastructure Issue Reporting System
 
-An intelligent civic issue reporting platform designed to help citizens report public infrastructure problems and enable authorities to efficiently manage, assign, track, and resolve those issues.
+A web-based civic issue reporting platform that allows citizens to report public infrastructure problems and enables administrators, authority users, and Field Staff to review, assign, track, and update those issues.
 
-## 🎯 Project Objective
+## Project objective
 
-The system provides a centralized platform for reporting and managing civic infrastructure issues such as:
+The system centralizes reports for public infrastructure problems such as:
 
-- 🚧 Road damage
-- 💡 Street light problems
-- 🗑️ Waste management issues
-- 🚰 Water-related problems
-- 🚦 Traffic infrastructure issues
-- 🏗️ Other public infrastructure problems
+- Road damage
+- Street light problems
+- Waste management issues
+- Water-related problems
+- Traffic infrastructure issues
+- Other public infrastructure problems
 
-## 🏗️ System Architecture
+A report can contain structured issue information, optional latitude/longitude coordinates, and evidence images.
 
-The application follows a modern client-server architecture:
+## Architecture
 
-**Frontend → REST API → FastAPI Backend → PostgreSQL Database**
+```text
+React + Vite frontend
+        ↓ Axios HTTP requests with Bearer JWT
+FastAPI REST API
+        ↓ SQLAlchemy
+PostgreSQL database
+```
 
-## 🗄️ Database Design
+The application also uses Leaflet and OpenStreetMap for optional location selection and read-only issue-location maps. Runtime evidence files are served from the backend upload directory.
 
-The system uses **PostgreSQL** as the relational database.
+## Current implemented features
 
-The database contains entities for users, civic issues, assignments, issue images, status history, notifications, and feedback.
+- Citizen registration and login
+- Bcrypt password hashing and JWT authentication
+- Role-based access for citizens, admins, authority users, and Field Staff
+- Citizen issue reporting with category, priority, severity, description, and optional location text
+- Optional Leaflet/OpenStreetMap location selection
+- Latitude/longitude persistence and Issue Details map markers
+- No-coordinate fallback for issues without map data
+- JPEG, PNG, and WEBP evidence-image upload, retrieval, display, and authorized deletion
+- Admin issue listing and Field Staff assignment
+- Active assignment source of truth: `issues.assigned_to`
+- Field Staff assigned-issue retrieval and workflow
+- Status changes and progress timeline updates
+- New-issue, assignment, status, and progress notifications
+- Unread notification count and mark-as-read behavior
+- Citizen, Admin, Authority, Field Staff, Issue Details, and Notifications pages
+- FastAPI Swagger/OpenAPI documentation
 
-### Entity Relationship Diagram
+The planned AI/computer-vision enhancement is not part of the current implementation.
 
-![ER Diagram](docs/diagrams/ER_DIAGRAM.svg)
+## Technology stack
 
-### Editable ER Diagram
+- Frontend: React, Vite, React Router, Axios, React Leaflet, Leaflet
+- Backend: Python, FastAPI, SQLAlchemy, Pydantic
+- Database: PostgreSQL
+- Authentication: JWT Bearer tokens
+- Password security: bcrypt through PassLib
+- Maps: Leaflet with OpenStreetMap tiles
+- API documentation: FastAPI Swagger/OpenAPI
+- Version control: Git and GitHub
 
-The editable source diagram is available here:
+## Prerequisites
 
-`docs/diagrams/ER_DIAGRAM.drawio`
-
-## ⚙️ Technology Stack
-
-### Backend
-- Python
-- FastAPI
-- SQLAlchemy
-- Pydantic
-- JWT Authentication
-
-### Database
+- Python 3.11 or a compatible version supporting the project dependencies
+- Node.js and npm
 - PostgreSQL
+- A local database named `smart_civic`
+- Network access to OpenStreetMap tiles when using map features
 
-### Development Tools
-- Visual Studio Code
-- Git
-- GitHub
-- Swagger / OpenAPI
+## PostgreSQL setup
 
-## 🔐 Security
+Create the local PostgreSQL database before starting the backend:
 
-The system uses authentication and authorization mechanisms to protect user accounts and API resources.
+```sql
+CREATE DATABASE smart_civic;
+```
 
-Planned security features include:
+Use a local PostgreSQL role with permission to connect to this database. Do not place real credentials in source control.
 
-- Password hashing
-- JWT-based authentication
-- Role-based authorization
-- Protected API endpoints
-- Input validation
+## Backend setup
 
-## 📊 Core Modules
+From the repository root:
 
-1. User Management
-2. Citizen Authentication
-3. Civic Issue Reporting
-4. Issue Assignment
-5. Issue Status Tracking
-6. Issue Image Management
-7. Notifications
-8. Feedback
-9. Administrative Management
+```powershell
+cd backend
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
-## 🚀 Project Status
+If PowerShell activation is unavailable, activate the equivalent environment using the shell conventions for your platform.
 
-### Completed
-- [x] PostgreSQL database setup
-- [x] SQLAlchemy database connection
-- [x] Users table
-- [x] Issues table
-- [x] FastAPI backend
-- [x] User creation API
-- [x] Issue creation API
-- [x] Swagger API documentation
-- [x] ER Diagram
+Create `backend/.env` from `backend/.env.example` and replace the placeholders locally:
 
-### In Progress
-- [ ] JWT authentication
-- [ ] Role-based authorization
-- [ ] Protected endpoints
-- [ ] Advanced issue management
-- [ ] Frontend integration
+```dotenv
+DATABASE_URL=postgresql://postgres:change_me@localhost:5432/smart_civic
+SECRET_KEY=replace-with-a-long-random-secret
+```
 
-## 📁 Project Structure
+Never commit a real password or secret key.
+
+Start the backend from the `backend` directory:
+
+```powershell
+uvicorn app.main:app --reload
+```
+
+The local API is expected at `http://127.0.0.1:8000`.
+
+Health check:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+Interactive API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+## Frontend setup
+
+Open a second terminal:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+The Vite development server prints the local frontend URL. The frontend API client currently targets `http://127.0.0.1:8000`.
+
+Useful frontend commands:
+
+```powershell
+npm run lint
+npm run build
+npm run preview
+```
+
+## Project structure
 
 ```text
 smart-civic-issue-reporting/
-│
 ├── backend/
-│   └── app/
-│       ├── models/
-│       ├── routes/
-│       ├── schemas/
-│       ├── services/
-│       ├── config.py
-│       ├── database.py
-│       ├── main.py
-│       └── security.py
-│
+│   ├── app/
+│   │   ├── models/
+│   │   ├── repositories/
+│   │   ├── routes/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   ├── dependencies.py
+│   │   ├── main.py
+│   │   └── security.py
+│   ├── .env.example
+│   └── requirements.txt
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── services/
+│   ├── eslint.config.js
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vite.config.js
 ├── docs/
 │   ├── diagrams/
 │   │   ├── ER_DIAGRAM.drawio
 │   │   ├── ER_DIAGRAM.svg
-│   │   └── SYSTEM_ARCHITECTURE.svg
+│   │   └── SYSTEM_ARCHITECTURE.md
+│   ├── DEMO_CHECKLIST.md
 │   ├── DOMAIN_STUDY.md
-│   └── TECH_STACK.md
-│
+│   ├── ENVIRONMENT_NOTES.md
+│   ├── FEATURES.md
+│   ├── SDLC_STATUS.md
+│   ├── SYSTEM_WORKFLOW.md
+│   ├── TECH_STACK.md
+│   ├── TESTING.md
+│   └── VALIDATION_SUMMARY.md
 ├── Problem_Statement.md
 ├── requirements.txt
 ├── README.md
 └── .gitignore
+```
+
+## Database and assignment note
+
+The repository includes an `assignments` model from the project history, but the active mounted application workflow assigns Field Staff through `issues.assigned_to`. The active route is `PATCH /issues/{issue_id}/assign`; the legacy assignment router is intentionally not mounted.
+
+## Verification status
+
+The completed verification work reported passing results for PostgreSQL connectivity, FastAPI backend workflows, frontend workflows, authentication, JWT, RBAC, issue reporting, map selection, coordinate persistence, Issue Details, image handling, assignment, Field Staff workflow, status/progress updates, notifications, frontend ESLint, frontend production build, dependency checks, and security configuration cleanup.
+
+The project is verified for local execution. No public cloud deployment or CI/CD execution is claimed.
+
+See the final documentation set:
+
+- [Testing](docs/TESTING.md)
+- [Validation summary](docs/VALIDATION_SUMMARY.md)
+- [System workflow](docs/SYSTEM_WORKFLOW.md)
+- [Demo checklist](docs/DEMO_CHECKLIST.md)
+- [Features](docs/FEATURES.md)
+- [SDLC status](docs/SDLC_STATUS.md)
+- [Environment notes](docs/ENVIRONMENT_NOTES.md)
