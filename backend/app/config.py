@@ -17,6 +17,16 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173"
     )
 
+    # Supabase project URL used by the backend Storage client.
+    supabase_url: str = ""
+
+    # Current server-side Supabase Secret key.
+    # Keep this secret and never expose it to the frontend.
+    supabase_secret_key: str = ""
+
+    # Supabase Storage bucket for issue evidence images.
+    supabase_storage_bucket: str = "issue-images"
+
     @property
     def cors_origin_list(self) -> list[str]:
         """Return configured CORS origins as a clean list."""
